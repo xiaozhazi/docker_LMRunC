@@ -306,6 +306,9 @@ func libcontainerCriuOpts(runconfigOpts *runconfig.CriuConfig) *libcontainer.Cri
 	return &libcontainer.CriuOpts{
 		ImagesDirectory:         runconfigOpts.ImagesDirectory,
 		WorkDirectory:           runconfigOpts.WorkDirectory,
+		PrevImagesDir:           runconfigOpts.PrevImagesDir,
+		PreDump:				 runconfigOpts.PreDump,
+		TrackMem:                runconfigOpts.TrackMem,
 		LeaveRunning:            runconfigOpts.LeaveRunning,
 		TcpEstablished:          runconfigOpts.TcpEstablished,
 		ExternalUnixConnections: runconfigOpts.ExternalUnixConnections,

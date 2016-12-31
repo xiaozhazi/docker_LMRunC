@@ -366,6 +366,7 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 		TcpEstablished: proto.Bool(criuOpts.TcpEstablished),
 		ExtUnixSk:      proto.Bool(criuOpts.ExternalUnixConnections),
 		FileLocks:      proto.Bool(criuOpts.FileLocks),
+		TrackMem:       proto.Bool(criuOpts.TrackMem),
 	}
 
 	// append optional criu opts, e.g., page-server and port
@@ -376,7 +377,17 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 		}
 	}
 
-	t := criurpc.CriuReqType_DUMP
+	if criuOpts.PrevImagesDir != ""{
+		rpcOpts.ParentImg = proto.String(criuOpts.PrevImagesDir)
+	}
+	
+	var t criurpc.CriuReqType
+	if criuOpts.PreDump {
+		t = criurpc.CriuReqType_PRE_DUMP
+	} else{
+		t = criurpc.CriuReqType_DUMP
+	}
+
 	req := &criurpc.CriuReq{
 		Type: &t,
 		Opts: &rpcOpts,
@@ -657,6 +668,8 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 		case t == criurpc.CriuReqType_RESTORE:
 		case t == criurpc.CriuReqType_DUMP:
 			break
+		case t == criurpc.CriuReqType_PRE_DUMP:
+			return nil
 		default:
 			return fmt.Errorf("unable to parse the response %s", resp.String())
 		}

@@ -21,6 +21,9 @@ func (cli *DockerCli) CmdCheckpoint(args ...string) error {
 		flCheckTcp     = cmd.Bool([]string{"-allow-tcp"}, false, "allow checkpointing tcp connections")
 		flExtUnix      = cmd.Bool([]string{"-allow-ext-unix"}, false, "allow checkpointing external unix connections")
 		flShell        = cmd.Bool([]string{"-allow-shell"}, false, "allow checkpointing shell jobs")
+		flPrevImagesDir      = cmd.String([]string{"-prev-images-dir"},"","directory for storing the pre dump memory files")
+		flPreDump      = cmd.Bool([]string{"-pre-dump"}, false, "allow checkpoint by pre dump")
+		flTrackMem     = cmd.Bool([]string{"-track-mem"}, false, "allow turn on the memory track in kernel")
 	)
 
 	if err := cmd.ParseFlags(args, true); err != nil {
@@ -39,6 +42,9 @@ func (cli *DockerCli) CmdCheckpoint(args ...string) error {
 		TcpEstablished:          *flCheckTcp,
 		ExternalUnixConnections: *flExtUnix,
 		ShellJob:                *flShell,
+		PrevImagesDir:           *flPrevImagesDir,
+		PreDump:                 *flPreDump,
+		TrackMem:	             *flTrackMem,
 	}
 
 	var encounteredError error

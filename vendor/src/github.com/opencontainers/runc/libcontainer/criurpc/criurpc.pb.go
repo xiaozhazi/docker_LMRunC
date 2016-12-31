@@ -489,6 +489,26 @@ func (m *CriuNotify) GetPid() int32 {
 	return 0
 }
 
+
+
+//
+// List of features which can queried via
+// CRIU_REQ_TYPE__FEATURE_CHECK
+type CriuFeatures struct {
+	MemTrack         *bool  `protobuf:"varint,1,opt,name=mem_track" json:"mem_track,omitempty"`
+	XXX_unrecognized []byte `json:"-"`
+}
+
+func (m *CriuFeatures) Reset()         { *m = CriuFeatures{} }
+func (m *CriuFeatures) String() string { return proto.CompactTextString(m) }
+func (*CriuFeatures) ProtoMessage()    {}
+func (m *CriuFeatures) GetMemTrack() bool {
+	 if m != nil && m.MemTrack != nil {
+		 return *m.MemTrack
+	 }
+	 return false
+ }
+
 type CriuReq struct {
 	Type          *CriuReqType `protobuf:"varint,1,req,name=type,enum=CriuReqType" json:"type,omitempty"`
 	Opts          *CriuOpts    `protobuf:"bytes,2,opt,name=opts" json:"opts,omitempty"`
@@ -498,6 +518,8 @@ type CriuReq struct {
 	// will wait for more req-s to appear. Works not
 	// for all request types.
 	KeepOpen         *bool  `protobuf:"varint,4,opt,name=keep_open" json:"keep_open,omitempty"`
+
+	Features         *CriuFeatures `protobuf:"bytes,5,opt,name=features" json:"features,omitempty"`
 	XXX_unrecognized []byte `json:"-"`
 }
 
@@ -533,6 +555,14 @@ func (m *CriuReq) GetKeepOpen() bool {
 	return false
 }
 
+func (m *CriuReq) GetFeatures() *CriuFeatures {
+	if m != nil {
+		return m.Features
+	}
+	return nil
+}
+
+
 type CriuResp struct {
 	Type             *CriuReqType        `protobuf:"varint,1,req,name=type,enum=CriuReqType" json:"type,omitempty"`
 	Success          *bool               `protobuf:"varint,2,req,name=success" json:"success,omitempty"`
@@ -541,6 +571,7 @@ type CriuResp struct {
 	Notify           *CriuNotify         `protobuf:"bytes,5,opt,name=notify" json:"notify,omitempty"`
 	Ps               *CriuPageServerInfo `protobuf:"bytes,6,opt,name=ps" json:"ps,omitempty"`
 	CrErrno          *int32              `protobuf:"varint,7,opt,name=cr_errno" json:"cr_errno,omitempty"`
+	Features         *CriuFeatures       `protobuf:"bytes,8,opt,name=features" json:"features,omitempty"`
 	XXX_unrecognized []byte              `json:"-"`
 }
 
@@ -596,6 +627,14 @@ func (m *CriuResp) GetCrErrno() int32 {
 	}
 	return 0
 }
+
+func (m *CriuResp) GetFeatures() *CriuFeatures {
+	 if m != nil {
+		 return m.Features
+	 }
+	 return nil
+ }
+
 
 func init() {
 	proto.RegisterEnum("CriuReqType", CriuReqType_name, CriuReqType_value)

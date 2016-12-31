@@ -8,6 +8,9 @@ type CriuPageServerInfo struct {
 type CriuOpts struct {
 	ImagesDirectory         string             // directory for storing image files
 	WorkDirectory           string             // directory to cd and write logs/pidfiles/stats to
+	PrevImagesDir           string             // directory for storing memory files in pre dump
+	PreDump                 bool               // allow to use pre dump
+	TrackMem                bool               // enable memory track in kernel
 	LeaveRunning            bool               // leave container in running state after checkpoint
 	TcpEstablished          bool               // checkpoint/restore established TCP connections
 	ExternalUnixConnections bool               // allow external unix connections

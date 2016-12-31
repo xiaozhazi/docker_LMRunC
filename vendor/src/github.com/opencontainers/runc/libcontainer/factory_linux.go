@@ -105,7 +105,7 @@ func TmpfsRoot(l *LinuxFactory) error {
 // configures the factory with the provided option funcs.
 func New(root string, options ...func(*LinuxFactory) error) (Factory, error) {
 	if root != "" {
-		if err := os.MkdirAll(root, 0700); err != nil {
+		if err := os.MkdirAll(root, 0755); err != nil {
 			return nil, newGenericError(err, SystemError)
 		}
 	}
