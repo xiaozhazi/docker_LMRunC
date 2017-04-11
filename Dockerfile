@@ -72,7 +72,11 @@ RUN apt-get update && apt-get install -y \
 	--no-install-recommends
 
 # Get lvm2 source for compiling statically
-RUN git clone -b v2_02_103 https://git.fedorahosted.org/git/lvm2.git /usr/local/lvm2
+#RUN git clone -b v2_02_103 https://git.fedorahosted.org/git/lvm2.git /usr/local/lvm2
+ENV LVM2_VERSION 2.02.103
+RUN mkdir -p /usr/local/lvm2 \
+		&& curl -fsSL "https://mirrors.kernel.org/sourceware/lvm2/LVM2.${LVM2_VERSION}.tgz" \
+		| tar -xzC /usr/local/lvm2 --strip-components=1
 # see https://git.fedorahosted.org/cgit/lvm2.git/refs/tags for release tags
 
 # Compile and install lvm2
@@ -101,11 +105,14 @@ RUN cd /usr/src/criu \
 
 # Install Go
 ENV GO_VERSION 1.4.2
-RUN curl -sSL https://golang.org/dl/go${GO_VERSION}.src.tar.gz | tar -v -C /usr/local -xz \
-	&& mkdir -p /go/bin
+#RUN curl -sSL https://golang.org/dl/go${GO_VERSION}.src.tar.gz | tar -v -C /usr/local -xz \
+#	&& mkdir -p /go/bin
+#ENV GO_VERSION 1.7.5
+RUN curl -fsSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" \
+		| tar -xzC /usr/local
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go:/go/src/github.com/docker/docker/vendor
-RUN cd /usr/local/go/src && ./make.bash --no-clean 2>&1
+#RUN cd /usr/local/go/src && ./make.bash --no-clean 2>&1
 
 # Compile Go for cross compilation
 ENV DOCKER_CROSSPLATFORMS \

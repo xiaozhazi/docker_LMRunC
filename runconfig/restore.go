@@ -1,4 +1,12 @@
 package runconfig
+import(
+ "github.com/opencontainers/runc/libcontainer"
+ )
+
+type CriuPageServerInfo struct {
+	Address string
+	Port    int32
+}
 
 type CriuConfig struct {
 	ImagesDirectory         string
@@ -10,6 +18,8 @@ type CriuConfig struct {
 	TcpEstablished          bool
 	ExternalUnixConnections bool
 	ShellJob                bool
+	AutoDedup               bool
+	PageServer              libcontainer.CriuPageServerInfo
 }
 
 type RestoreConfig struct {

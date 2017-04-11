@@ -367,10 +367,13 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 		ExtUnixSk:      proto.Bool(criuOpts.ExternalUnixConnections),
 		FileLocks:      proto.Bool(criuOpts.FileLocks),
 		TrackMem:       proto.Bool(criuOpts.TrackMem),
+		AutoDedup:      proto.Bool(criuOpts.AutoDedup),
 	}
+
 
 	// append optional criu opts, e.g., page-server and port
 	if criuOpts.PageServer.Address != "" && criuOpts.PageServer.Port != 0 {
+		fmt.Printf(criuOpts.PageServer.Address)
 		rpcOpts.Ps = &criurpc.CriuPageServerInfo{
 			Address: proto.String(criuOpts.PageServer.Address),
 			Port:    proto.Int32(criuOpts.PageServer.Port),

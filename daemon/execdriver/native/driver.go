@@ -310,9 +310,11 @@ func libcontainerCriuOpts(runconfigOpts *runconfig.CriuConfig) *libcontainer.Cri
 		PreDump:				 runconfigOpts.PreDump,
 		TrackMem:                runconfigOpts.TrackMem,
 		LeaveRunning:            runconfigOpts.LeaveRunning,
+		AutoDedup:               runconfigOpts.AutoDedup,
 		TcpEstablished:          runconfigOpts.TcpEstablished,
 		ExternalUnixConnections: runconfigOpts.ExternalUnixConnections,
 		ShellJob:                runconfigOpts.ShellJob,
+		PageServer:              runconfigOpts.PageServer,
 	}
 }
 
