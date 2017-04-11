@@ -21,9 +21,6 @@ func (cli *DockerCli) CmdRestore(args ...string) error {
 		flExtUnix  = cmd.Bool([]string{"-allow-ext-unix"}, false, "allow restoring external unix connections")
 		flShell    = cmd.Bool([]string{"-allow-shell"}, false, "allow restoring shell jobs")
 		flForce    = cmd.Bool([]string{"-force"}, false, "bypass checks for current container state")
-		flPrevImagesDir= cmd.String([]string{"-prev-images-dir"},"","directory for storing the pre dump memory files")
-		flPreDump      = cmd.Bool([]string{"-pre-dump"}, false, "allow checkpoint by pre dump")
-		flTrackMem     = cmd.Bool([]string{"-track-mem"}, false, "allow turn on the memory track in kernel")
 	)
 
 	if err := cmd.ParseFlags(args, true); err != nil {
@@ -42,9 +39,6 @@ func (cli *DockerCli) CmdRestore(args ...string) error {
 			TcpEstablished:          *flCheckTcp,
 			ExternalUnixConnections: *flExtUnix,
 			ShellJob:                *flShell,
-			PrevImagesDir:           *flPrevImagesDir,
-			PreDump:                 *flPreDump,
-			TrackMem:                *flTrackMem,
 		},
 		ForceRestore: *flForce,
 	}
